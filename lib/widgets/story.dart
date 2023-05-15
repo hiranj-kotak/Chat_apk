@@ -29,12 +29,12 @@ class Story extends StatelessWidget {
               border: showGreenStrip
                   ? Border.all(
                       color: colors.greenColor,
-                      width: 1,
+                      width: 2,
                     )
                   : null,
             ),
             child: Padding(
-              padding: EdgeInsets.all(showGreenStrip ? 2.25 : 0),
+              padding: EdgeInsets.all(showGreenStrip ? 2.5 : 0),
               child: Container(
                   height: size,
                   width: size,

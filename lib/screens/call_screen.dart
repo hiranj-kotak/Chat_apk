@@ -6,30 +6,30 @@ import '../colors.dart' as colors;
 import 'package:provider/provider.dart';
 //screens
 //widgets
-import '../widgets/message_tile.dart';
-import '../widgets/Status_bar.dart';
 import '../widgets/search_bar.dart';
+import '../widgets/call_screen_tile.dart';
 //providers
 import '../providers/person_list.dart';
 import '../providers/user.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String route = '/homescreen';
+class CallScreen extends StatefulWidget {
+  static const String route = '/callScreen';
   final ScrollController scrollController;
-  HomeScreen({
+  CallScreen({
     required this.scrollController,
   });
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CallScreen> createState() => _CallScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CallScreenState extends State<CallScreen> {
   bool _isSearch = false;
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     List<User> persons = Provider.of<Person>(context).persons;
+
     return Scaffold(
       backgroundColor: colors.backgroundColor,
       floatingActionButton: FloatingActionButton(
@@ -40,14 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 55,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                colors.greenGradadient.lightshade,
-                colors.greenGradadient.darkshade,
-              ],
-            ),
+            gradient: LinearGradient(colors: [
+              colors.greenGradadient.lightshade,
+              colors.greenGradadient.darkshade,
+            ]),
           ),
-          child: Icon(Icons.group_add),
+          child: Icon(Icons.phone_forwarded),
         ),
       ),
       body: SafeArea(
@@ -60,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Chats",
+                    "Calls",
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w800,
@@ -90,10 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 14),
-              const Divider(
-                thickness: 0.6,
-              ),
-              _isSearch ? SearchBar(controller: controller) : StatusBar(),
+              _isSearch ? SearchBar(controller: controller) : const SizedBox(),
               const Divider(
                 thickness: 0.6,
               ),
@@ -106,11 +101,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   itemCount: persons.length,
-                  itemBuilder: (context, index) => MessageTile(
-                    u: persons[index],
+                  itemBuilder: (context, index) => CallTile(
+                    name:
+                        "${persons[index].firstName} ${persons[index].lastName}",
                     lastMessage: "Hello",
                     time: "19:25",
+                    isonline: persons[index].isonline,
+                    imageurl: persons[index].picture.toString(),
                     msgCounter: 1,
+                    Status: CallType.accepted,
                   ),
                 ),
               ),

@@ -1,15 +1,21 @@
 //packages
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //screens
 //widgets
 import './add_story.dart';
 import './story.dart';
 //providers
 import '../providers/person_list.dart';
+import '../providers/user.dart';
 
 class StatusBar extends StatelessWidget {
+  final bool showAddStory;
+  StatusBar({this.showAddStory = true});
   @override
   Widget build(BuildContext context) {
+    List<User> persons = Provider.of<Person>(context).persons;
+
     return Padding(
       padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
       child: Container(
@@ -17,11 +23,14 @@ class StatusBar extends StatelessWidget {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            const Add_story(size: 60, icon: Icons.add),
-            const Padding(
-                padding: EdgeInsets.only(
-              right: 16,
-            )),
+            showAddStory
+                ? const Add_story(size: 60, icon: Icons.add)
+                : const SizedBox(),
+            showAddStory
+                ? const SizedBox(
+                    width: 10,
+                  )
+                : const SizedBox(),
             Container(
               child: ListView(
                 shrinkWrap: true,
@@ -30,10 +39,10 @@ class StatusBar extends StatelessWidget {
                   persons.length,
                   (index) => Story(
                     size: 60,
-                    imageurl: persons[index]["picture"].toString(),
+                    imageurl: persons[index].picture.toString(),
                     name:
-                        "${persons[index]["first_name"]} ${persons[index]["last_name"]}",
-                    showGreenStrip: persons[index]['isonline'] as bool,
+                        "${persons[index].firstName} ${persons[index].lastName}",
+                    showGreenStrip: persons[index].isonline,
                   ),
                 ),
               ),
